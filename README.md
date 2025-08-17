@@ -6,9 +6,15 @@
 ---
 ## 📸 Example Output
 
-Here’s what the agent’s reasoning process looks like in action:
+Here’s what the agent’s reasoning process looks like when resolving scenarios:
 
-![Agent Result](results/)
+### Scenario A – Overloaded Restaurant
+![Overloaded Restaurant](results/overloaded_restaurant.png)
+
+### Scenario B – Damaged Packaging Dispute
+![Damaged Packaging](results/damaged_packaging.png)
+
+
 
 
 ## 📌 Overview
