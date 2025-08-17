@@ -4,6 +4,12 @@
 > Built with **LangGraph**, powered by **OpenRouter LLMs**.
 
 ---
+## 📸 Example Output
+
+Here’s what the agent’s reasoning process looks like in action:
+
+![Agent Result](results/)
+
 
 ## 📌 Overview
 **Project Synapse** is a functional **proof-of-concept (PoC)** demonstrating how an autonomous AI agent can handle complex last-mile delivery disruptions described in natural language.  
