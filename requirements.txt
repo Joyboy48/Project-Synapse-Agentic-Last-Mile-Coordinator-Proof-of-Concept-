@@ -1,0 +1,10 @@
+#Core LangChain and LangGraph libraries
+langchain
+langgraph
+langchain-openai
+
+#For loading environment variables (e.g., API keys)
+python-dotenv
+
+#Pydantic is used for defining tool argument schemas
+pydantic
