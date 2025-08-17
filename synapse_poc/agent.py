@@ -14,7 +14,7 @@ import operator
 import os
 from typing import TypedDict, Annotated, List
 
-# Import and call load_dotenv() at the very top to load API keys
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -27,32 +27,27 @@ from langgraph.prebuilt import ToolNode
 from .prompts import MASTER_PROMPT
 from .tools import ALL_TOOLS
 
-# --- 1. Define the Agent's State ---
 class AgentState(TypedDict):
     """
     Represents the state of our agent.
     """
     messages: Annotated[List[AnyMessage], operator.add]
 
-# --- 2. Define the Agent's Brain and Tools ---
 
-# Set up the core LLM to use OpenRouter's API with a model that supports tool use.
-# Switched to a reliable free model with strong tool-calling capabilities.
 llm = ChatOpenAI(
     model="google/gemini-flash-1.5",
     openai_api_key=os.getenv("OPENROUTER_API_KEY"),
     openai_api_base="https://openrouter.ai/api/v1",
     default_headers={
-        "HTTP-Referer": "http://localhost", # Replace with your app's URL if deployed
-        "X-Title": "Project Synapse",      # Optional, for usage tracking
+        "HTTP-Referer": "http://localhost", 
+        "X-Title": "Project Synapse",     
     }
 )
 llm_with_tools = llm.bind_tools(ALL_TOOLS)
 
-# The ToolNode executes tools requested by the LLM.
+
 tool_node = ToolNode(ALL_TOOLS)
 
-# --- 3. Define the Graph Nodes and Edges ---
 
 def should_continue(state: AgentState) -> str:
     """
@@ -75,18 +70,15 @@ def call_model(state: AgentState) -> dict:
     response = chain.invoke({"messages": state["messages"]})
     return {"messages": [response]}
 
-# --- 4. Construct the Graph ---
+
 
 workflow = StateGraph(AgentState)
 
-# Add the primary nodes
 workflow.add_node("agent", call_model)
 workflow.add_node("action", tool_node)
 
-# Set the entry point
 workflow.set_entry_point("agent")
 
-# Add the conditional edge for the reasoning loop
 workflow.add_conditional_edges(
     "agent",
     should_continue,
@@ -96,8 +88,6 @@ workflow.add_conditional_edges(
     },
 )
 
-# Add the edge to loop back from action to the agent
 workflow.add_edge("action", "agent")
 
-# Compile the graph into a runnable executor
 agent_executor = workflow.compile()
