@@ -1,42 +1,51 @@
-Project Synapse: Agentic Last-Mile Coordinator (Proof-of-Concept)
-This repository contains the functional proof-of-concept (PoC) for Project Synapse, an autonomous AI agent designed to resolve last-mile delivery disruptions.
+# Project Synapse: Agentic Last-Mile Coordinator (Proof-of-Concept)
 
-1. Overview
-This application demonstrates an AI agent that can autonomously handle complex delivery scenarios described in natural language. It accepts a disruption scenario as a command-line argument, and the agent then uses a predefined set of simulated tools to reason about the problem and devise a multi-step resolution plan.
+> ⚡ An autonomous AI agent for resolving last-mile delivery disruptions.  
+> Built with **LangGraph**, powered by **OpenRouter LLMs**.
 
-The core of this PoC is built using LangGraph, a framework for creating stateful, multi-actor AI applications, and connects to LLMs via the OpenRouter API.
+---
 
-2. Features
-Functional Command-Line Application: A Python script (main.py) serves as the entry point, accepting a disruption scenario as input.
+## 📌 Overview
+**Project Synapse** is a functional **proof-of-concept (PoC)** demonstrating how an autonomous AI agent can handle complex last-mile delivery disruptions described in natural language.  
 
-Transparent Chain of Thought: The agent's entire reasoning process is printed to the console, showing its Thought, the Action (tool call) it takes, and the Observation it makes from the tool's output.
+The agent:
+- Accepts a disruption scenario via the command line.  
+- Reasons about the problem using predefined simulated tools.  
+- Devise a **multi-step resolution plan**, transparently showing its chain of thought.
 
-Complex Scenario Resolution: The agent can successfully resolve the two distinct scenarios outlined in the project description: the "Overloaded Restaurant" and the "Damaged Packaging Dispute."
+The system is powered by:
+- **LangGraph** → for stateful, multi-actor workflows.  
+- **ReAct Framework** → for structured reasoning and dynamic decision-making.  
+- **OpenRouter API** → for LLM integration.  
 
-Well-Documented Codebase: The code is structured logically, well-commented, and this README provides a comprehensive overview of the agent's design and prompting strategies.
+---
 
-3. Agent Design and Prompt Engineering Strategy
-The agent's intelligence is shaped by its architecture and a carefully engineered prompt.
+## ✨ Features
+- 🖥 **Command-Line Application** – Run the agent with `main.py`, passing disruption scenarios as input.  
+- 🔎 **Transparent Reasoning** – Prints the agent’s **Thought → Action → Observation** process to the console.  
+- 🧩 **Complex Scenario Resolution** – Handles both the *Overloaded Restaurant* and *Damaged Packaging Dispute* cases.  
+- 📖 **Well-Documented Codebase** – Clear structure, logical design, and detailed comments for easy extension.  
 
-Architectural Design: LangGraph and the ReAct Framework
-LangGraph: We chose LangGraph because it natively supports cyclical workflows. Logistics problems are rarely linear; an agent needs to think, act, observe, and then loop back to think again based on new information. LangGraph models this as a state machine (a graph), which is a more robust and scalable paradigm for agentic systems.
+---
 
-ReAct Framework: The agent's reasoning is structured using the ReAct (Reason + Act) framework. This prompting technique instructs the LLM to interleave its internal reasoning (Thought) with actions (Action), allowing the agent to dynamically adjust its plan based on real-time feedback from its tools.
+## 🧠 Agent Design & Prompting Strategy  
 
-Prompt Engineering Strategy
-The master system prompt (synapse_poc/prompts.py) is the agent's "constitution." It includes:
+### **Architecture**
+- **LangGraph**: Models logistics problems as **state machines (graphs)**, enabling cyclical workflows where the agent *thinks → acts → observes → thinks again*.  
+- **ReAct Framework**: Structures reasoning into interleaved steps of **Thought → Action → Observation**, ensuring adaptive planning.  
 
-Persona: Establishes a clear identity for the agent.
+### **Prompt Engineering**
+The system prompt (`synapse_poc/prompts.py`) acts as the **agent’s constitution**, including:  
+- 🎭 **Persona** – Defines agent identity.  
+- 🎯 **Core Directive** – High-level mission.  
+- 🛡 **Constraints & Guardrails** – Prevents errors.  
+- 🛠 **Tool Specifications** – Lists all available tools.  
+- 📝 **Few-Shot Exemplars** – Guides reasoning with worked examples.  
 
-Core Directive: Provides a high-level mission.
+---
 
-Constraints and Guardrails: Defines clear rules to prevent errors.
-
-Tool Specifications: Lists the available tools for the LLM.
-
-Few-Shot Exemplars: Includes a high-quality example of the desired reasoning pattern to guide the agent's behavior.
-
-4. Project Structure
+## 📂 Project Structure
+```
 .
 ├── .env.example
 ├── main.py
@@ -47,32 +56,68 @@ Few-Shot Exemplars: Includes a high-quality example of the desired reasoning pat
     ├── agent.py
     ├── prompts.py
     └── tools.py
+```
 
-5. Setup and Installation
-Clone the repository.
+---
 
-Create and activate a virtual environment:
+## ⚙️ Setup & Installation  
 
-python -m venv venv
-source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/project-synapse.git
+   cd project-synapse
+   ```
 
-Install dependencies:
+2. **Create & activate a virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate     # Linux / MacOS
+   venv\Scripts\activate        # Windows
+   ```
 
-pip install -r requirements.txt
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Set up environment variables:
+4. **Set up environment variables**
+   - Copy `.env.example` → `.env`  
+   - Add your OpenRouter API key:
+     ```env
+     OPENROUTER_API_KEY="your_openrouter_api_key_here"
+     ```
 
-Rename .env.example to .env.
+---
 
-Open the .env file and add your OpenRouter API key:
+## 🚀 Usage  
 
-OPENROUTER_API_KEY="your_openrouter_api_key_here"
+Run the agent with a disruption scenario (string wrapped in quotes):  
 
-6. Usage
-Run the agent from your terminal, providing the disruption scenario as a string wrapped in quotes.
-
-Scenario A: Overloaded Restaurant
+**Scenario A – Overloaded Restaurant**
+```bash
 python main.py "An order was just placed at 'Pizza Palace' (merchant_id: 'pizzapalace_123'), but the merchant is overloaded. The customer is 'cust_abc' and the driver is 'driver_xyz'."
+```
 
-Scenario B: Damaged Packaging Dispute
+**Scenario B – Damaged Packaging Dispute**
+```bash
 python main.py "A dispute has been triggered for order 'ord_def' at the customer's door over a spilled drink. The driver is 'driver_xyz' and the merchant is 'pizzapalace_123'."
+```
+
+---
+
+## 🛠 Tech Stack
+- **Python 3.10+**  
+- **LangGraph**  
+- **ReAct Framework**  
+- **OpenRouter API**  
+
+---
+
+## 🤝 Contributing
+Pull requests, bug reports, and feature suggestions are welcome!  
+Please open an issue first to discuss any major changes.  
+
+---
+
+## 📜 License
+MIT License © 2025 Astitva Arya
